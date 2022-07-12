@@ -12,12 +12,6 @@
 
 #include <SoftwareSerial.h>
 
-#define STOP 5
-#define FOWARD 1
-#define LEFT 2
-#define RIGHT 3
-#define BACK 4
-
 SoftwareSerial BT(2, 3);
 
 int motor_AA = 5;
@@ -29,7 +23,10 @@ int echo_pin = 12;
 int trig_pin = 13;
 
 long distance = 0;
-uint8_t dir = STOP;
+char dir = 'S';
+char ch = 'S';
+
+int speed = 128;
 
 unsigned long last_time = 0;
 unsigned long now_time = 0;
@@ -45,45 +42,86 @@ void setup()
   pinMode(motor_BB, OUTPUT);
   pinMode(trig_pin, OUTPUT);
   pinMode(echo_pin, INPUT);
-  drive();
+  drive(ch);
 }
 
-void drive()
+void drive(char c)
 {
-  if (dir == FOWARD)
+  if (c == 'F')
   {
     analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, 128);
-    analogWrite(motor_BA, 128);
+    analogWrite(motor_AB, speed);
+    analogWrite(motor_BA, speed);
     analogWrite(motor_BB, 0);
+    dir = 'F';
   }
-  else if (dir == LEFT)
+  else if (c == 'L')
   {
-    analogWrite(motor_AA, 128);
+    analogWrite(motor_AA, speed);
     analogWrite(motor_AB, 0);
-    analogWrite(motor_BA, 128);
+    analogWrite(motor_BA, speed);
     analogWrite(motor_BB, 0);
+    dir = 'L';
   }
-  else if (dir == RIGHT)
+  else if (c == 'R')
   {
     analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, 128);
+    analogWrite(motor_AB, speed);
     analogWrite(motor_BA, 0);
-    analogWrite(motor_BB, 128);
+    analogWrite(motor_BB, speed);
+    dir = 'R';
   }
-  else if (dir == BACK)
+  else if (c == 'B')
   {
-    analogWrite(motor_AA, 128);
+    analogWrite(motor_AA, speed);
     analogWrite(motor_AB, 0);
     analogWrite(motor_BA, 0);
-    analogWrite(motor_BB, 128);
+    analogWrite(motor_BB, speed);
+    dir = 'B';
+  }
+  else if (c == 'G')
+  {
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, speed / 2);
+    analogWrite(motor_BA, speed);
+    analogWrite(motor_BB, 0);
+    dir = 'G';
+  }
+  else if (c == 'I')
+  {
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, speed);
+    analogWrite(motor_BA, speed / 2);
+    analogWrite(motor_BB, 0);
+    dir = 'I';
+  }
+  else if (c == 'H')
+  {
+    analogWrite(motor_AA, speed / 2);
+    analogWrite(motor_AB, 0);
+    analogWrite(motor_BA, 0);
+    analogWrite(motor_BB, speed);
+    dir = 'H';
+  }
+  else if (c == 'J')
+  {
+    analogWrite(motor_AA, speed);
+    analogWrite(motor_AB, 0);
+    analogWrite(motor_BA, 0);
+    analogWrite(motor_BB, speed / 2);
+    dir = 'J';
+  }
+  else if (c == 'S' || c == 'D')
+  {
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, 0);
+    analogWrite(motor_BA, 0);
+    analogWrite(motor_BB, 0);
+    dir = 'S';
   }
   else
   {
-    analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, 0);
-    analogWrite(motor_BA, 0);
-    analogWrite(motor_BB, 0);
+    drive(dir);
   }
 }
 
@@ -100,7 +138,7 @@ void getDistance()
 
 void loop()
 {
-//  getDistance();
+  //  getDistance();
   if (BT.available())
   {
     now_time = millis();
@@ -109,16 +147,17 @@ void loop()
       getDistance();
       last_time = now_time;
     }
-    dir = BT.read();
-    if (distance < 10 && dir == FOWARD)
+    ch = BT.read();
+
+    if (distance < 10 && (ch == 'F' || ch == 'G' || ch == 'I'))
     {
-      dir = STOP;
+      ch = 'S';
     }
-    drive();
+    drive(ch);
   }
   else if (millis() - now_time >= 1000)
   {
-    dir = STOP;
-    drive();
+    ch = 'S';
+    drive(ch);
   }
 }
