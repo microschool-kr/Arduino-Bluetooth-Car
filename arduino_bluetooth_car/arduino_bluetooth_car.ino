@@ -26,10 +26,11 @@ long distance = 0;
 char dir = 'S';
 char ch = 'S';
 
-int speed = 128;
+int speed = 110;
 
 unsigned long last_time = 0;
 unsigned long now_time = 0;
+unsigned long bt_time = 0;
 
 void setup()
 {
@@ -138,24 +139,27 @@ void getDistance()
 
 void loop()
 {
-  //  getDistance();
+  now_time = millis();
+  if (now_time - last_time >= 10)
+  {
+    getDistance();
+    if (distance < 10)
+    {
+      drive('S');
+    }
+    last_time = now_time;
+  }
   if (BT.available())
   {
-    now_time = millis();
-    if (now_time - last_time >= 100)
-    {
-      getDistance();
-      last_time = now_time;
-    }
     ch = BT.read();
-
-    if (distance < 10 && (ch == 'F' || ch == 'G' || ch == 'I'))
+    bt_time = now_time;
+    if (distance < 10 && ch == 'F' || ch == 'G' || ch == 'I')
     {
-      ch = 'S';
+      drive('S');
     }
     drive(ch);
   }
-  else if (millis() - now_time >= 1000)
+  else if (now_time - bt_time >= 1000)
   {
     ch = 'S';
     drive(ch);
