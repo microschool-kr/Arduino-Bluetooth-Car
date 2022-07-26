@@ -50,66 +50,66 @@ void drive(char c)
 {
   if (c == 'F')
   {
-    analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, speed);
-    analogWrite(motor_BA, speed);
-    analogWrite(motor_BB, 0);
+    analogWrite(motor_AA, speed);
+    analogWrite(motor_AB, 0);
+    analogWrite(motor_BA, 0);
+    analogWrite(motor_BB, speed);
     dir = 'F';
   }
   else if (c == 'L')
   {
-    analogWrite(motor_AA, speed);
-    analogWrite(motor_AB, 0);
-    analogWrite(motor_BA, speed);
-    analogWrite(motor_BB, 0);
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, speed);
+    analogWrite(motor_BA, 0);
+    analogWrite(motor_BB, speed);
     dir = 'L';
   }
   else if (c == 'R')
   {
-    analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, speed);
-    analogWrite(motor_BA, 0);
-    analogWrite(motor_BB, speed);
+    analogWrite(motor_AA, speed);
+    analogWrite(motor_AB, 0);
+    analogWrite(motor_BA, speed);
+    analogWrite(motor_BB, 0);
     dir = 'R';
   }
   else if (c == 'B')
   {
-    analogWrite(motor_AA, speed);
-    analogWrite(motor_AB, 0);
-    analogWrite(motor_BA, 0);
-    analogWrite(motor_BB, speed);
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, speed);
+    analogWrite(motor_BA, speed);
+    analogWrite(motor_BB, 0);
     dir = 'B';
   }
   else if (c == 'G')
-  {
-    analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, speed / 2);
-    analogWrite(motor_BA, speed);
-    analogWrite(motor_BB, 0);
-    dir = 'G';
-  }
-  else if (c == 'I')
-  {
-    analogWrite(motor_AA, 0);
-    analogWrite(motor_AB, speed);
-    analogWrite(motor_BA, speed / 2);
-    analogWrite(motor_BB, 0);
-    dir = 'I';
-  }
-  else if (c == 'H')
   {
     analogWrite(motor_AA, speed / 2);
     analogWrite(motor_AB, 0);
     analogWrite(motor_BA, 0);
     analogWrite(motor_BB, speed);
-    dir = 'H';
+    dir = 'G';
   }
-  else if (c == 'J')
+  else if (c == 'I')
   {
     analogWrite(motor_AA, speed);
     analogWrite(motor_AB, 0);
     analogWrite(motor_BA, 0);
     analogWrite(motor_BB, speed / 2);
+    dir = 'I';
+  }
+  else if (c == 'H')
+  {
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, speed / 2);
+    analogWrite(motor_BA, speed);
+    analogWrite(motor_BB, 0);
+    dir = 'H';
+  }
+  else if (c == 'J')
+  {
+    analogWrite(motor_AA, 0);
+    analogWrite(motor_AB, speed);
+    analogWrite(motor_BA, speed / 2);
+    analogWrite(motor_BB, 0);
     dir = 'J';
   }
   else if (c == 'S' || c == 'D')
