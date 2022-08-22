@@ -153,7 +153,10 @@ void loop()
     {
       drive('S');
     }
-    drive(ch);
+    else
+    {
+      drive(ch);
+    }
   }
   else if (now_time - bt_time >= 1000)
   {
