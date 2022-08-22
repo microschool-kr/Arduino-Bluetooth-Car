@@ -143,10 +143,6 @@ void loop()
   if (now_time - last_time >= 10)
   {
     getDistance();
-    if (distance < 10)
-    {
-      drive('S');
-    }
     last_time = now_time;
   }
   if (BT.available())
